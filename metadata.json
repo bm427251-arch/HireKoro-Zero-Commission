@@ -1,0 +1,6 @@
+{
+  "name": "HireKoro",
+  "description": "Zero Commission on-demand service and vehicle rental platform connecting users with drivers, technicians, and vehicles with subscription slabs and secret admin panel.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

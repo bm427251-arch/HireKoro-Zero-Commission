@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Left Pillar Soft Charcoal #2B2B2B -->
+  <rect x="180" y="160" width="170" height="704" rx="85" ry="85" fill="#2B2B2B"/>
+  
+  <!-- Right Pillar Bright Yellow #FFD700 with rounded corners -->
+  <rect x="674" y="160" width="170" height="704" rx="85" ry="85" fill="#FFD700"/>
+
+  <!-- Crossbar Connector -->
+  <rect x="300" y="452" width="424" height="120" rx="40" ry="40" fill="#2B2B2B"/>
+
+  <!-- Center Steering Wheel Icon #FFD700 with Black Outline #000000 -->
+  <g transform="translate(512, 512)">
+    <!-- Outer Steering Wheel Ring -->
+    <circle cx="0" cy="0" r="180" fill="none" stroke="#000000" stroke-width="44"/>
+    <circle cx="0" cy="0" r="180" fill="none" stroke="#FFD700" stroke-width="32"/>
+    
+    <!-- Central Hub -->
+    <circle cx="0" cy="0" r="62" fill="#FFD700" stroke="#000000" stroke-width="12"/>
+    <circle cx="0" cy="0" r="26" fill="#2B2B2B"/>
+
+    <!-- Spokes (3-spoke steering wheel: left, right, bottom) -->
+    <!-- Left Spoke -->
+    <path d="M -60 0 L -165 -15 L -165 15 Z" fill="#FFD700" stroke="#000000" stroke-width="8"/>
+    <!-- Right Spoke -->
+    <path d="M 60 0 L 165 -15 L 165 15 Z" fill="#FFD700" stroke="#000000" stroke-width="8"/>
+    <!-- Bottom Spoke -->
+    <path d="M 0 60 L -16 165 L 16 165 Z" fill="#FFD700" stroke="#000000" stroke-width="8"/>
+  </g>
+</svg>
