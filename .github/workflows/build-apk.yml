@@ -19,52 +19,53 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: 'stable'
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Create dummy google-services.json if missing
+      - name: Prepare google-services.json
         run: |
-          mkdir -p android/app/src/debug
-          mkdir -p app/src/debug
+          mkdir -p app/src/debug app/src/main android/app/src/debug android/app/src/main
           DUMMY_JSON='{"project_info":{"project_number":"123456789","project_id":"hirekoro-dummy","storage_bucket":"hirekoro-dummy.appspot.com"},"client":[{"client_info":{"mobilesdk_app_id":"1:123456789:android:abcdef","android_client_info":{"package_name":"com.aistudio.hirekoro.bvqwmz"}},"oauth_client":[],"api_key":[{"current_key":"dummy_key"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}},{"client_info":{"mobilesdk_app_id":"1:123456789:android:abcdef123","android_client_info":{"package_name":"com.hirekoro.app"}},"oauth_client":[],"api_key":[{"current_key":"dummy_key"}],"services":{"appinvite_service":{"other_platform_oauth_client":[]}}}],"configuration_version":"1"}'
-          if [ ! -f android/app/google-services.json ]; then echo "$DUMMY_JSON" > android/app/google-services.json; fi
-          if [ ! -f app/google-services.json ]; then echo "$DUMMY_JSON" > app/google-services.json; fi
-          cp android/app/google-services.json android/app/src/debug/google-services.json || true
+          if [ ! -f "app/google-services.json" ]; then echo "$DUMMY_JSON" > app/google-services.json; fi
           cp app/google-services.json app/src/debug/google-services.json || true
-          ls -la android/app/
+          cp app/google-services.json app/src/google-services.json || true
+          cp app/google-services.json android/app/google-services.json || true
+          cp app/google-services.json android/app/src/debug/google-services.json || true
+          cp app/google-services.json android/app/src/google-services.json || true
+          echo "Verified google-services.json across directories:"
+          ls -la app/google-services.json app/src/debug/google-services.json android/app/google-services.json
 
-      - name: Create debug keystore if missing
+      - name: Prepare Debug Keystore
         run: |
-          mkdir -p android/app
-          if [ ! -f debug.keystore ]; then keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"; fi
+          mkdir -p ~/.android android/app app
+          if [ -f "debug.keystore.base64" ] && [ ! -f "debug.keystore" ]; then
+            base64 -d debug.keystore.base64 > debug.keystore
+          fi
+          if [ ! -f "debug.keystore" ]; then
+            keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+          fi
+          cp debug.keystore ~/.android/debug.keystore || true
           cp debug.keystore android/app/debug.keystore || true
-          cd android/app
-          if [ ! -f debug.keystore ]; then keytool -genkey -v -keystore debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"; fi
+          cp debug.keystore app/debug.keystore || true
+          echo "Keystore verified at root:"
           ls -la debug.keystore
 
-      - name: Build APK (Flutter or Gradle Fallback)
+      - name: Build Android APK with Gradle
         run: |
+          chmod +x ./gradlew || true
+          if [ -f "./gradlew" ]; then
+            ./gradlew assembleDebug --no-daemon --stacktrace
+          else
+            gradle assembleDebug --no-daemon --stacktrace
+          fi
           mkdir -p build/app/outputs/flutter-apk
-          # Attempt Flutter build if pubspec dependencies resolve
-          if flutter pub get; then
-            flutter build apk --release --no-tree-shake-icons || true
-          fi
-          # If Flutter build does not produce APK, build via Gradle
-          if [ ! -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
-            echo "Building via Gradle..."
-            chmod +x ./gradlew || true
-            ./gradlew assembleDebug --no-daemon || gradle assembleDebug --no-daemon
-            cp app/build/outputs/apk/debug/app-debug.apk build/app/outputs/flutter-apk/app-release.apk || cp .build-outputs/app-debug.apk build/app/outputs/flutter-apk/app-release.apk
-          fi
-          ls -la build/app/outputs/flutter-apk/
+          cp app/build/outputs/apk/debug/app-debug.apk build/app/outputs/flutter-apk/app-release.apk || cp .build-outputs/app-debug.apk build/app/outputs/flutter-apk/app-release.apk
+          ls -la build/app/outputs/flutter-apk/app-release.apk
 
       - name: Upload HireKoro APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: HireKoro-APK
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            app/build/outputs/apk/debug/app-debug.apk

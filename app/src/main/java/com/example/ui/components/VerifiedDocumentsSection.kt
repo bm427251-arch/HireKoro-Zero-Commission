@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -387,7 +388,7 @@ fun VerifiedDocumentsSection(
                                 .height(40.dp)
                                 .testTag("download_booking_receipt_btn")
                         ) {
-                            Icon(Icons.Default.ReceiptLong, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Icon(Icons.AutoMirrored.Filled.ReceiptLong, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
                             Text("Download Booking Receipt PDF", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                         }
@@ -429,7 +430,7 @@ fun VerifiedDocumentsSection(
                                     .height(44.dp)
                                     .testTag("download_booking_receipt_btn")
                             ) {
-                                Icon(Icons.Default.ReceiptLong, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Icon(Icons.AutoMirrored.Filled.ReceiptLong, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text("Receipt PDF", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                             }
@@ -473,7 +474,7 @@ fun VerifiedDocumentsSection(
                                     .height(44.dp)
                                     .testTag("download_booking_receipt_btn")
                             ) {
-                                Icon(Icons.Default.ReceiptLong, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Icon(Icons.AutoMirrored.Filled.ReceiptLong, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text("Receipt PDF", fontSize = 11.sp, fontWeight = FontWeight.Bold)
                             }
@@ -914,7 +915,7 @@ fun VerifiedDocumentsSection(
                                 modifier = Modifier.size(36.dp)
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
-                                    Icon(Icons.Default.ReceiptLong, contentDescription = null, tint = HireKoroBlack, modifier = Modifier.size(20.dp))
+                                    Icon(Icons.AutoMirrored.Filled.ReceiptLong, contentDescription = null, tint = HireKoroBlack, modifier = Modifier.size(20.dp))
                                 }
                             }
                             Spacer(modifier = Modifier.width(10.dp))

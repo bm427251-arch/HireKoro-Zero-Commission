@@ -16,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -260,7 +261,7 @@ fun ShareLocationPromptDialog(
                                 shape = RoundedCornerShape(8.dp),
                                 modifier = Modifier.weight(1f).height(40.dp)
                             ) {
-                                Icon(Icons.Default.Send, contentDescription = null, modifier = Modifier.size(16.dp))
+                                Icon(Icons.AutoMirrored.Filled.Send, contentDescription = null, modifier = Modifier.size(16.dp))
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text("WhatsApp", fontSize = 12.sp, fontWeight = FontWeight.Bold)
                             }
