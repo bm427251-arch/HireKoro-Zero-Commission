@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -225,14 +226,27 @@ fun AdminPanelScreen(
             onDismissRequest = { showAddProfessionDialog = false },
             title = { Text("Add New Profession", fontWeight = FontWeight.Bold) },
             text = {
+                val adminFieldColors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    cursorColor = Color.Black,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedBorderColor = HireKoroYellow,
+                    unfocusedBorderColor = Color(0xFFCCCCCC),
+                    focusedLabelColor = Color.Black,
+                    unfocusedLabelColor = Color(0xFF555555)
+                )
+                val adminFieldStyle = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+
                 Column {
-                    OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Profession Name") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = name, onValueChange = { name = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Profession Name", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(value = category, onValueChange = { category = it }, label = { Text("Category (Driver / Technician / Labour)") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = category, onValueChange = { category = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Category (Driver / Technician / Labour)", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(value = slab, onValueChange = { slab = it }, label = { Text("Assigned Slab (1-4)") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = slab, onValueChange = { slab = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Assigned Slab (1-4)", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(value = desc, onValueChange = { desc = it }, label = { Text("Description") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = desc, onValueChange = { desc = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Description", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                 }
             },
             confirmButton = {
@@ -265,14 +279,27 @@ fun AdminPanelScreen(
             onDismissRequest = { showAddVehicleDialog = false },
             title = { Text("Add New Vehicle Fleet", fontWeight = FontWeight.Bold) },
             text = {
+                val adminFieldColors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    cursorColor = Color.Black,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.White,
+                    focusedBorderColor = HireKoroYellow,
+                    unfocusedBorderColor = Color(0xFFCCCCCC),
+                    focusedLabelColor = Color.Black,
+                    unfocusedLabelColor = Color(0xFF555555)
+                )
+                val adminFieldStyle = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+
                 Column {
-                    OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Vehicle Name (e.g. Crane / Tractor)") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = name, onValueChange = { name = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Vehicle Name (e.g. Crane / Tractor)", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(value = category, onValueChange = { category = it }, label = { Text("Category") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = category, onValueChange = { category = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Category", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(value = slab, onValueChange = { slab = it }, label = { Text("Assigned Slab (1-4)") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = slab, onValueChange = { slab = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Assigned Slab (1-4)", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                     Spacer(modifier = Modifier.height(8.dp))
-                    OutlinedTextField(value = capacity, onValueChange = { capacity = it }, label = { Text("Capacity / Specs") }, modifier = Modifier.fillMaxWidth())
+                    OutlinedTextField(value = capacity, onValueChange = { capacity = it }, textStyle = adminFieldStyle, colors = adminFieldColors, label = { Text("Capacity / Specs", color = Color.Black) }, modifier = Modifier.fillMaxWidth())
                 }
             },
             confirmButton = {
@@ -369,11 +396,23 @@ fun AdminDashboardTab(
                         editableApiKey = it
                         saveStatus = null
                     },
-                    label = { Text("Fast2SMS API Key (Live / Sandbox)") },
-                    placeholder = { Text("Enter your Fast2SMS authorization key...") },
+                    textStyle = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium),
+                    label = { Text("Fast2SMS API Key (Live / Sandbox)", color = Color.Black) },
+                    placeholder = { Text("Enter your Fast2SMS authorization key...", color = Color(0xFF666666)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = HireKoroYellow,
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedLabelColor = Color.Black,
+                        unfocusedLabelColor = Color(0xFF555555)
+                    ),
                     trailingIcon = {
                         Button(
                             onClick = {
@@ -612,17 +651,34 @@ fun AdminSubscriptionsTab(
             title = { Text("Edit ${s.title}", fontWeight = FontWeight.Bold) },
             text = {
                 Column {
+                    val slabFieldColors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = HireKoroYellow,
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedLabelColor = Color.Black,
+                        unfocusedLabelColor = Color(0xFF555555)
+                    )
+                    val slabFieldStyle = TextStyle(color = Color.Black, fontSize = 14.sp, fontWeight = FontWeight.Medium)
+
                     OutlinedTextField(
                         value = newPriceInput,
                         onValueChange = { newPriceInput = it },
-                        label = { Text("Monthly Price (₹)") },
+                        textStyle = slabFieldStyle,
+                        colors = slabFieldColors,
+                        label = { Text("Monthly Price (₹)", color = Color.Black) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = newTrialDaysInput,
                         onValueChange = { newTrialDaysInput = it },
-                        label = { Text("Trial Days") },
+                        textStyle = slabFieldStyle,
+                        colors = slabFieldColors,
+                        label = { Text("Trial Days", color = Color.Black) },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

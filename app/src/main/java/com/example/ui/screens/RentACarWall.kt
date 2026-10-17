@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -90,20 +91,25 @@ fun RentACarWall(
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = onSearchChange,
+                textStyle = TextStyle(
+                    color = Color.Black,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold
+                ),
                 placeholder = {
                     Text(
                         text = "Search car name or model, e.g. 'Innova', 'Swift', 'Thar'...",
                         fontSize = 13.sp,
-                        color = Color.Gray
+                        color = Color(0xFF666666)
                     )
                 },
                 leadingIcon = {
-                    Icon(imageVector = Icons.Default.DirectionsCar, contentDescription = "Search Car", tint = HireKoroCharcoal)
+                    Icon(imageVector = Icons.Default.DirectionsCar, contentDescription = "Search Car", tint = Color.Black)
                 },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { onSearchChange("") }) {
-                            Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear")
+                            Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear", tint = Color.Black)
                         }
                     }
                 },
@@ -112,10 +118,17 @@ fun RentACarWall(
                     .fillMaxWidth()
                     .testTag("car_search_input"),
                 colors = OutlinedTextFieldDefaults.colors(
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black,
+                    cursorColor = Color.Black,
                     focusedContainerColor = Color.White,
                     unfocusedContainerColor = Color.White,
                     focusedBorderColor = HireKoroYellow,
-                    unfocusedBorderColor = Color.LightGray
+                    unfocusedBorderColor = Color(0xFFCCCCCC),
+                    focusedLeadingIconColor = Color.Black,
+                    unfocusedLeadingIconColor = Color.Black,
+                    focusedTrailingIconColor = Color.Black,
+                    unfocusedTrailingIconColor = Color.Black
                 ),
                 singleLine = true
             )
@@ -141,19 +154,20 @@ fun RentACarWall(
                                 Text(
                                     text = type,
                                     fontSize = 11.sp,
-                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.Black
                                 )
                             },
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = HireKoroYellow,
-                                selectedLabelColor = HireKoroBlack,
+                                selectedLabelColor = Color.Black,
                                 containerColor = Color.White,
-                                labelColor = HireKoroCharcoal
+                                labelColor = Color.Black
                             ),
                             border = FilterChipDefaults.filterChipBorder(
                                 enabled = true,
                                 selected = isSelected,
-                                borderColor = if (isSelected) HireKoroYellow else Color(0xFFE0E0E0)
+                                borderColor = if (isSelected) HireKoroYellow else Color(0xFFCCCCCC)
                             )
                         )
                     }
@@ -172,7 +186,7 @@ fun RentACarWall(
                     Icon(
                         imageVector = Icons.Default.Tune,
                         contentDescription = "More Filters",
-                        tint = HireKoroCharcoal,
+                        tint = Color.Black,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -191,13 +205,13 @@ fun RentACarWall(
                     Column(modifier = Modifier.padding(12.dp)) {
                         // Fuel Row
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Fuel: ", fontSize = 11.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(70.dp))
+                            Text("Fuel: ", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Black, modifier = Modifier.width(70.dp))
                             val fuels = listOf("All", "Petrol", "Diesel", "CNG")
                             fuels.forEach { f ->
                                 val sel = selectedFuelFilter == f
                                 Surface(
                                     onClick = { selectedFuelFilter = f },
-                                    color = if (sel) HireKoroCharcoal else Color(0xFFF0F0F0),
+                                    color = if (sel) HireKoroYellow else Color(0xFFF0F0F0),
                                     shape = RoundedCornerShape(6.dp),
                                     modifier = Modifier.padding(horizontal = 3.dp)
                                 ) {
@@ -205,7 +219,7 @@ fun RentACarWall(
                                         text = f,
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = if (sel) HireKoroYellow else Color.Black,
+                                        color = Color.Black,
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
                                     )
                                 }
@@ -216,13 +230,13 @@ fun RentACarWall(
 
                         // Transmission Row
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Gear: ", fontSize = 11.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(70.dp))
+                            Text("Gear: ", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Black, modifier = Modifier.width(70.dp))
                             val trans = listOf("All", "Manual", "Automatic")
                             trans.forEach { t ->
                                 val sel = selectedTransmissionFilter == t
                                 Surface(
                                     onClick = { selectedTransmissionFilter = t },
-                                    color = if (sel) HireKoroCharcoal else Color(0xFFF0F0F0),
+                                    color = if (sel) HireKoroYellow else Color(0xFFF0F0F0),
                                     shape = RoundedCornerShape(6.dp),
                                     modifier = Modifier.padding(horizontal = 3.dp)
                                 ) {
@@ -230,7 +244,7 @@ fun RentACarWall(
                                         text = t,
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = if (sel) HireKoroYellow else Color.Black,
+                                        color = Color.Black,
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
                                     )
                                 }
@@ -241,7 +255,7 @@ fun RentACarWall(
 
                         // Drive Mode Row
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("Drive: ", fontSize = 11.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(70.dp))
+                            Text("Drive: ", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Black, modifier = Modifier.width(70.dp))
                             val modes = listOf("All", "Self Drive", "With Driver")
                             modes.forEach { m ->
                                 val sel = selectedDriveModeFilter == m
@@ -255,7 +269,7 @@ fun RentACarWall(
                                         text = m,
                                         fontSize = 10.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = if (sel) HireKoroBlack else Color.Black,
+                                        color = Color.Black,
                                         modifier = Modifier.padding(horizontal = 6.dp, vertical = 4.dp)
                                     )
                                 }
@@ -782,14 +796,14 @@ fun RentCarBookingDialog(
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Surface(
                         onClick = { isWithDriver = false },
-                        color = if (!isWithDriver) HireKoroCharcoal else Color(0xFFF3F4F6),
+                        color = if (!isWithDriver) HireKoroYellow else Color(0xFFF3F4F6),
                         shape = RoundedCornerShape(8.dp),
                         modifier = Modifier.weight(1f).height(38.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Text(
                                 text = "Self Drive",
-                                color = if (!isWithDriver) HireKoroYellow else Color.Black,
+                                color = Color.Black,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )
@@ -797,14 +811,14 @@ fun RentCarBookingDialog(
                     }
                     Surface(
                         onClick = { isWithDriver = true },
-                        color = if (isWithDriver) HireKoroCharcoal else Color(0xFFF3F4F6),
+                        color = if (isWithDriver) HireKoroYellow else Color(0xFFF3F4F6),
                         shape = RoundedCornerShape(8.dp),
                         modifier = Modifier.weight(1f).height(38.dp)
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Text(
                                 text = "With Driver (+₹500/d)",
-                                color = if (isWithDriver) HireKoroYellow else Color.Black,
+                                color = Color.Black,
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold
                             )

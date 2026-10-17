@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -164,13 +165,25 @@ private fun RateInputField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            leadingIcon = { Text("₹", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = HireKoroCharcoal) },
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            ),
+            leadingIcon = { Text("₹", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = Color.Black) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             modifier = Modifier.fillMaxWidth(),
             colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                cursorColor = Color.Black,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
                 focusedBorderColor = HireKoroYellow,
-                unfocusedBorderColor = Color.LightGray
+                unfocusedBorderColor = Color(0xFFCCCCCC),
+                focusedLeadingIconColor = Color.Black,
+                unfocusedLeadingIconColor = Color.Black
             )
         )
     }

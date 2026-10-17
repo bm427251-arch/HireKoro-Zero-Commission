@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -80,8 +81,8 @@ fun HomeScreen(
                     Button(
                         onClick = { onTabSelected(tab) },
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = if (isSelected) HireKoroYellow else Color.White.copy(alpha = 0.1f),
-                            contentColor = if (isSelected) HireKoroBlack else Color.White
+                            containerColor = if (isSelected) HireKoroYellow else Color.White,
+                            contentColor = Color.Black
                         ),
                         shape = RoundedCornerShape(12.dp),
                         contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp),
@@ -92,12 +93,13 @@ fun HomeScreen(
                             .testTag("tab_${tab.name.lowercase()}")
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(imageVector = icon, contentDescription = null, modifier = Modifier.size(16.dp))
+                            Icon(imageVector = icon, contentDescription = null, tint = Color.Black, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(4.dp))
                             Text(
                                 text = title,
                                 fontSize = 11.sp,
-                                fontWeight = if (isSelected) FontWeight.ExtraBold else FontWeight.Medium,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.Black,
                                 maxLines = 1
                             )
                         }
@@ -127,6 +129,11 @@ fun HomeScreen(
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
+                    textStyle = TextStyle(
+                        color = Color.Black,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     placeholder = {
                         Text(
                             text = if (currentTab == MainTab.HIRE_DRIVER)
@@ -134,16 +141,16 @@ fun HomeScreen(
                             else
                                 "Search technician e.g. 'AC Mistri', 'Electrician'...",
                             fontSize = 13.sp,
-                            color = Color.Gray
+                            color = Color(0xFF666666)
                         )
                     },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "Search", tint = HireKoroCharcoal)
+                        Icon(imageVector = Icons.Default.Search, contentDescription = "Search", tint = Color.Black)
                     },
                     trailingIcon = {
                         if (searchQuery.isNotEmpty()) {
                             IconButton(onClick = { searchQuery = "" }) {
-                                Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear")
+                                Icon(imageVector = Icons.Default.Clear, contentDescription = "Clear", tint = Color.Black)
                             }
                         }
                     },
@@ -152,10 +159,17 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .testTag("home_search_input"),
                     colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black,
                         focusedContainerColor = Color.White,
                         unfocusedContainerColor = Color.White,
                         focusedBorderColor = HireKoroYellow,
-                        unfocusedBorderColor = Color.LightGray
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedLeadingIconColor = Color.Black,
+                        unfocusedLeadingIconColor = Color.Black,
+                        focusedTrailingIconColor = Color.Black,
+                        unfocusedTrailingIconColor = Color.Black
                     ),
                     singleLine = true
                 )

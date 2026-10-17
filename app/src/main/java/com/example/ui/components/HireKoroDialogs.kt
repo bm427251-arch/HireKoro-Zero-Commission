@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -117,12 +118,24 @@ fun SecretAdminLoginDialog(
                         emailInput = it
                         errorMessage = null
                     },
-                    label = { Text("Admin Email") },
+                    textStyle = TextStyle(
+                        color = Color.Black,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    label = { Text("Admin Email", color = Color.Black) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth().testTag("admin_email_input"),
                     colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
                         focusedBorderColor = HireKoroCharcoal,
-                        focusedLabelColor = HireKoroCharcoal
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedLabelColor = HireKoroCharcoal,
+                        unfocusedLabelColor = Color(0xFF555555)
                     )
                 )
 
@@ -291,11 +304,27 @@ fun RateProviderDialog(
                 OutlinedTextField(
                     value = comment,
                     onValueChange = { comment = it },
-                    label = { Text("Write your review (Optional)") },
-                    placeholder = { Text("e.g. Arrived right on time, polite and expert work.") },
+                    textStyle = TextStyle(
+                        color = Color.Black,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    label = { Text("Write your review (Optional)", color = Color.Black) },
+                    placeholder = { Text("e.g. Arrived right on time, polite and expert work.", color = Color(0xFF666666)) },
                     modifier = Modifier.fillMaxWidth().testTag("rating_comment_input"),
                     maxLines = 3,
-                    shape = RoundedCornerShape(10.dp)
+                    shape = RoundedCornerShape(10.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = HireKoroYellow,
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedLabelColor = Color.Black,
+                        unfocusedLabelColor = Color(0xFF555555)
+                    )
                 )
             }
         },
@@ -396,9 +425,25 @@ fun ReportIssueDialog(
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("Describe the issue in detail") },
+                    textStyle = TextStyle(
+                        color = Color.Black,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    label = { Text("Describe the issue in detail", color = Color.Black) },
                     modifier = Modifier.fillMaxWidth(),
-                    maxLines = 3
+                    maxLines = 3,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = HireKoroRed,
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedLabelColor = HireKoroRed,
+                        unfocusedLabelColor = Color(0xFF555555)
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))

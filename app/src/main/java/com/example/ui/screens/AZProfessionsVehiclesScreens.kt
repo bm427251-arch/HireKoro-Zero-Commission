@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -69,14 +70,26 @@ fun AZProfessionsScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            placeholder = { Text("Search Driver, Plumber, AC Mistri, Cook...") },
-            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold
+            ),
+            placeholder = { Text("Search Driver, Plumber, AC Mistri, Cook...", color = Color(0xFF666666)) },
+            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = Color.Black) },
             shape = RoundedCornerShape(12.dp),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("az_professions_search_input"),
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                cursorColor = Color.Black,
                 focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
+                unfocusedContainerColor = Color.White,
+                focusedBorderColor = HireKoroYellow,
+                unfocusedBorderColor = Color(0xFFCCCCCC),
+                focusedLeadingIconColor = Color.Black,
+                unfocusedLeadingIconColor = Color.Black
             )
         )
 
@@ -188,14 +201,26 @@ fun AZVehiclesScreen(
         OutlinedTextField(
             value = searchQuery,
             onValueChange = { searchQuery = it },
-            placeholder = { Text("Search JCB, Toto, Innova, Ambulance, Truck...") },
-            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null) },
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontSize = 15.sp,
+                fontWeight = FontWeight.SemiBold
+            ),
+            placeholder = { Text("Search JCB, Toto, Innova, Ambulance, Truck...", color = Color(0xFF666666)) },
+            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = null, tint = Color.Black) },
             shape = RoundedCornerShape(12.dp),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().testTag("az_vehicles_search_input"),
             singleLine = true,
             colors = OutlinedTextFieldDefaults.colors(
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                cursorColor = Color.Black,
                 focusedContainerColor = Color.White,
-                unfocusedContainerColor = Color.White
+                unfocusedContainerColor = Color.White,
+                focusedBorderColor = HireKoroYellow,
+                unfocusedBorderColor = Color(0xFFCCCCCC),
+                focusedLeadingIconColor = Color.Black,
+                unfocusedLeadingIconColor = Color.Black
             )
         )
 

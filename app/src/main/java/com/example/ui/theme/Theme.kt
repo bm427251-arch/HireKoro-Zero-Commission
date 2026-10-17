@@ -14,13 +14,13 @@ private val HireKoroDarkColorScheme = darkColorScheme(
     onPrimaryContainer = HireKoroYellow,
     secondary = HireKoroYellow,
     onSecondary = HireKoroBlack,
-    background = HireKoroCharcoal,
-    onBackground = HireKoroWhite,
-    surface = Color(0xFF1E1E1E),
-    onSurface = HireKoroWhite,
-    surfaceVariant = Color(0xFF333333),
-    onSurfaceVariant = Color(0xFFE0E0E0),
-    outline = Color(0xFF555555)
+    background = HireKoroBackground,
+    onBackground = HireKoroCharcoal,
+    surface = HireKoroWhite,
+    onSurface = HireKoroBlack,
+    surfaceVariant = Color(0xFFF3F4F6),
+    onSurfaceVariant = HireKoroCharcoal,
+    outline = Color(0xFFCCCCCC)
 )
 
 private val HireKoroLightColorScheme = lightColorScheme(

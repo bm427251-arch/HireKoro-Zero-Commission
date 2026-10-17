@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -238,10 +239,26 @@ fun WalletScreen(
                     OutlinedTextField(
                         value = amountToAdd,
                         onValueChange = { amountToAdd = it },
-                        label = { Text("Amount (₹)") },
+                        textStyle = TextStyle(
+                            color = Color.Black,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        label = { Text("Amount (₹)", color = Color.Black) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                            cursorColor = Color.Black,
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            focusedBorderColor = HireKoroYellow,
+                            unfocusedBorderColor = Color(0xFFCCCCCC),
+                            focusedLabelColor = Color.Black,
+                            unfocusedLabelColor = Color(0xFF555555)
+                        )
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
@@ -298,18 +315,50 @@ fun WalletScreen(
                     OutlinedTextField(
                         value = withdrawAmount,
                         onValueChange = { withdrawAmount = it },
-                        label = { Text("Withdraw Amount (₹)") },
+                        textStyle = TextStyle(
+                            color = Color.Black,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        label = { Text("Withdraw Amount (₹)", color = Color.Black) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                            cursorColor = Color.Black,
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            focusedBorderColor = HireKoroYellow,
+                            unfocusedBorderColor = Color(0xFFCCCCCC),
+                            focusedLabelColor = Color.Black,
+                            unfocusedLabelColor = Color(0xFF555555)
+                        )
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     OutlinedTextField(
                         value = withdrawUpi,
                         onValueChange = { withdrawUpi = it },
-                        label = { Text("UPI ID (e.g. mobile@upi)") },
+                        textStyle = TextStyle(
+                            color = Color.Black,
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.SemiBold
+                        ),
+                        label = { Text("UPI ID (e.g. mobile@upi)", color = Color.Black) },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = Color.Black,
+                            unfocusedTextColor = Color.Black,
+                            cursorColor = Color.Black,
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            focusedBorderColor = HireKoroYellow,
+                            unfocusedBorderColor = Color(0xFFCCCCCC),
+                            focusedLabelColor = Color.Black,
+                            unfocusedLabelColor = Color(0xFF555555)
+                        )
                     )
                 }
             },
