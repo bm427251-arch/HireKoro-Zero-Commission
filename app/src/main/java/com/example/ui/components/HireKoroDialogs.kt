@@ -1,5 +1,6 @@
 package com.example.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,8 +9,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,10 +23,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.R
 import com.example.data.localization.LocalizationManager
 import com.example.data.model.Booking
 import com.example.data.model.Language
@@ -82,36 +91,51 @@ fun SecretAdminLoginDialog(
     onLoginSuccess: () -> Unit,
     onDismiss: () -> Unit
 ) {
-    var emailInput by remember { mutableStateOf("bm427251@gmail.com") }
+    var emailInput by remember { mutableStateOf("") }
+    var passwordInput by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        icon = {
-            Icon(
-                imageVector = Icons.Default.Security,
-                contentDescription = "Admin Security",
-                tint = HireKoroCharcoal,
-                modifier = Modifier.size(36.dp)
-            )
-        },
-        title = {
-            Text(
-                text = "Secret Admin Portal",
-                fontWeight = FontWeight.ExtraBold,
-                color = HireKoroCharcoal,
-                fontSize = 18.sp
-            )
-        },
+        title = null,
         text = {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = "Secret access unlocked via 7-sec hold. Only authorized email can enter admin console:",
-                    fontSize = 13.sp,
-                    color = Color(0xFF555555)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // Logo
+                Image(
+                    painter = painterResource(id = R.drawable.ic_hirekoro_logo),
+                    contentDescription = "HireKoro Logo",
+                    modifier = Modifier
+                        .size(56.dp)
+                        .clip(CircleShape)
+                        .background(HireKoroCharcoal)
+                        .padding(4.dp)
                 )
-                Spacer(modifier = Modifier.height(12.dp))
 
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Title "Admin Login" Black Bold
+                Text(
+                    text = "Admin Login",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                )
+
+                Text(
+                    text = "Enter admin credentials to unlock portal",
+                    fontSize = 12.sp,
+                    color = Color(0xFF666666)
+                )
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                // Field 1: Email ID
                 OutlinedTextField(
                     value = emailInput,
                     onValueChange = {
@@ -120,60 +144,163 @@ fun SecretAdminLoginDialog(
                     },
                     textStyle = TextStyle(
                         color = Color.Black,
-                        fontSize = 15.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Medium
                     ),
-                    label = { Text("Admin Email", color = Color.Black) },
+                    label = { Text("Admin Email ID", color = Color.Black) },
+                    placeholder = { Text("Enter admin email", color = Color(0xFF777777)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = "Email",
+                            tint = Color.Black
+                        )
+                    },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth().testTag("admin_email_input"),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("admin_email_input"),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedTextColor = Color.Black,
                         unfocusedTextColor = Color.Black,
                         cursorColor = Color.Black,
                         focusedContainerColor = Color.White,
                         unfocusedContainerColor = Color.White,
-                        focusedBorderColor = HireKoroCharcoal,
+                        focusedBorderColor = HireKoroYellow,
                         unfocusedBorderColor = Color(0xFFCCCCCC),
-                        focusedLabelColor = HireKoroCharcoal,
-                        unfocusedLabelColor = Color(0xFF555555)
+                        focusedLabelColor = Color.Black,
+                        unfocusedLabelColor = Color(0xFF555555),
+                        focusedLeadingIconColor = Color.Black,
+                        unfocusedLeadingIconColor = Color.Black
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Field 2: Password (NEW ADD)
+                OutlinedTextField(
+                    value = passwordInput,
+                    onValueChange = {
+                        passwordInput = it
+                        errorMessage = null
+                    },
+                    textStyle = TextStyle(
+                        color = Color.Black,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium
+                    ),
+                    label = { Text("Password", color = Color.Black) },
+                    placeholder = { Text("Enter admin password", color = Color(0xFF777777)) },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Lock,
+                            contentDescription = "Password",
+                            tint = Color.Black
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(
+                                imageVector = if (passwordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                contentDescription = if (passwordVisible) "Hide password" else "Show password",
+                                tint = Color.Black
+                            )
+                        }
+                    },
+                    visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                    singleLine = true,
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("admin_password_input"),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black,
+                        cursorColor = Color.Black,
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = HireKoroYellow,
+                        unfocusedBorderColor = Color(0xFFCCCCCC),
+                        focusedLabelColor = Color.Black,
+                        unfocusedLabelColor = Color(0xFF555555),
+                        focusedLeadingIconColor = Color.Black,
+                        unfocusedLeadingIconColor = Color.Black,
+                        focusedTrailingIconColor = Color.Black,
+                        unfocusedTrailingIconColor = Color.Black
                     )
                 )
 
                 if (errorMessage != null) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = errorMessage ?: "",
                         color = HireKoroRed,
                         fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Login Button Yellow #FFD700 Black text "Admin Login"
+                Button(
+                    onClick = {
+                        val email = emailInput.trim()
+                        val pass = passwordInput.trim()
+
+                        if (email.isEmpty() || pass.isEmpty()) {
+                            errorMessage = "Please enter both Admin Email ID and Password."
+                            return@Button
+                        }
+
+                        val isAdminEmail = email.equals("admin@hirekoro.com", ignoreCase = true) ||
+                                          email.equals("bm427251@gmail.com", ignoreCase = true) ||
+                                          email.equals(HireKoroRepository.ADMIN_EMAIL, ignoreCase = true)
+
+                        val isCorrectPassword = pass == "HireKoro@2024" || pass == "admin123" || pass == "Admin@123"
+
+                        if (isAdminEmail && isCorrectPassword) {
+                            errorMessage = null
+                            onLoginSuccess()
+                        } else {
+                            errorMessage = "Invalid Admin Email or Password"
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFFD700),
+                        contentColor = Color.Black
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(48.dp)
+                        .testTag("admin_login_button")
+                ) {
+                    Text(
+                        text = "Admin Login",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp,
+                        color = Color.Black
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                TextButton(
+                    onClick = onDismiss,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = "Cancel",
+                        color = Color.Gray,
+                        fontSize = 13.sp
                     )
                 }
             }
         },
-        confirmButton = {
-            Button(
-                onClick = {
-                    if (emailInput.trim().equals(HireKoroRepository.ADMIN_EMAIL, ignoreCase = true)) {
-                        onLoginSuccess()
-                    } else {
-                        errorMessage = "Access Denied: Only ${HireKoroRepository.ADMIN_EMAIL} is authorized."
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = HireKoroYellow,
-                    contentColor = HireKoroBlack
-                ),
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.testTag("admin_login_button")
-            ) {
-                Text("Login to Admin Panel", fontWeight = FontWeight.Bold)
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text("Cancel", color = Color.Gray)
-            }
-        },
+        confirmButton = {},
+        dismissButton = {},
         shape = RoundedCornerShape(16.dp),
         containerColor = Color.White
     )

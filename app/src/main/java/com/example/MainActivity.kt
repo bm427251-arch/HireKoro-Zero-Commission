@@ -1,5 +1,6 @@
 package com.example
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import com.example.data.model.AppMode
 import com.example.data.model.MainTab
@@ -33,6 +35,19 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             HireKoroTheme {
+                val context = LocalContext.current
+                val sharedPrefs = remember {
+                    context.getSharedPreferences("hirekoro_prefs", Context.MODE_PRIVATE)
+                }
+
+                // Restore saved mode on initial launch
+                LaunchedEffect(Unit) {
+                    val isProvider = sharedPrefs.getBoolean("is_provider_mode", false)
+                    if (isProvider) {
+                        repository.setAppMode(AppMode.PROVIDER)
+                    }
+                }
+
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
@@ -68,14 +83,19 @@ class MainActivity : ComponentActivity() {
                             currentAppMode = currentAppMode,
                             currentLanguage = currentLanguage,
                             onAppModeChanged = { mode ->
+                                val isProvider = mode == AppMode.PROVIDER
+                                sharedPrefs.edit().putBoolean("is_provider_mode", isProvider).apply()
                                 repository.setAppMode(mode)
-                                if (mode == AppMode.PROVIDER) {
+                                if (isProvider) {
                                     repository.navigateTo(Screen.PROVIDER_DASHBOARD)
                                 } else {
                                     repository.navigateTo(Screen.HOME)
                                 }
                             },
                             onNavigate = { screen -> repository.navigateTo(screen) },
+                            onNavigateToBecome = { category ->
+                                repository.navigateToBecomeProvider(category)
+                            },
                             onSecretAdminTriggered = { showAdminLoginDialog = true },
                             onCloseDrawer = { scope.launch { drawerState.close() } }
                         )
@@ -86,8 +106,13 @@ class MainActivity : ComponentActivity() {
                         snackbarHost = { SnackbarHost(snackbarHostState) },
                         contentWindowInsets = WindowInsets.safeDrawing,
                         topBar = {
-                            // Header is shown on all screens except Admin Panel which has its own master bar
-                            if (currentScreen != Screen.ADMIN_PANEL) {
+                            // Header is shown on all screens except Admin Panel and Become screens which have dedicated bars
+                            if (currentScreen != Screen.ADMIN_PANEL &&
+                                currentScreen != Screen.BECOME_DRIVER &&
+                                currentScreen != Screen.BECOME_TECHNICIAN &&
+                                currentScreen != Screen.BECOME_RENT_OWNER &&
+                                currentScreen != Screen.BECOME_PROVIDER
+                            ) {
                                 HireKoroHeader(
                                     onMenuClick = { scope.launch { drawerState.open() } },
                                     currentLanguage = currentLanguage,
@@ -209,6 +234,49 @@ class MainActivity : ComponentActivity() {
                                         repository = repository,
                                         language = currentLanguage,
                                         onExitAdmin = { repository.navigateTo(Screen.HOME) }
+                                    )
+                                }
+                                Screen.BECOME_DRIVER -> {
+                                    BecomeProviderScreen(
+                                        initialCategory = "Driver",
+                                        repository = repository,
+                                        language = currentLanguage,
+                                        onNavigateBack = { repository.navigateBack() },
+                                        onRegistered = { repository.navigateTo(Screen.PROVIDER_DASHBOARD) }
+                                    )
+                                }
+                                Screen.BECOME_TECHNICIAN -> {
+                                    BecomeProviderScreen(
+                                        initialCategory = "Technician",
+                                        repository = repository,
+                                        language = currentLanguage,
+                                        onNavigateBack = { repository.navigateBack() },
+                                        onRegistered = { repository.navigateTo(Screen.PROVIDER_DASHBOARD) }
+                                    )
+                                }
+                                Screen.BECOME_RENT_OWNER -> {
+                                    BecomeProviderScreen(
+                                        initialCategory = "Vehicle Owner",
+                                        repository = repository,
+                                        language = currentLanguage,
+                                        onNavigateBack = { repository.navigateBack() },
+                                        onRegistered = { repository.navigateTo(Screen.PROVIDER_DASHBOARD) }
+                                    )
+                                }
+                                Screen.BECOME_PROVIDER -> {
+                                    val cat by repository.becomeProviderInitialCategory.collectAsState()
+                                    BecomeProviderScreen(
+                                        initialCategory = cat,
+                                        repository = repository,
+                                        language = currentLanguage,
+                                        onNavigateBack = { repository.navigateBack() },
+                                        onRegistered = { repository.navigateTo(Screen.PROVIDER_DASHBOARD) }
+                                    )
+                                }
+                                Screen.PROVIDER_DOCUMENTS -> {
+                                    ProviderDocumentsScreen(
+                                        repository = repository,
+                                        language = currentLanguage
                                     )
                                 }
                             }

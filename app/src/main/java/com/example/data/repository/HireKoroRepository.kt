@@ -707,6 +707,32 @@ class HireKoroRepository {
         _searchQuery.value = query
     }
 
+    private val _becomeProviderInitialCategory = MutableStateFlow("Driver")
+    val becomeProviderInitialCategory: StateFlow<String> = _becomeProviderInitialCategory.asStateFlow()
+
+    fun setBecomeProviderInitialCategory(category: String) {
+        _becomeProviderInitialCategory.value = category
+    }
+
+    fun navigateToBecomeProvider(category: String) {
+        _becomeProviderInitialCategory.value = category
+        val screen = when (category.lowercase()) {
+            "driver" -> Screen.BECOME_DRIVER
+            "technician" -> Screen.BECOME_TECHNICIAN
+            "vehicle owner", "rentcar owner", "rent a car owner" -> Screen.BECOME_RENT_OWNER
+            else -> Screen.BECOME_PROVIDER
+        }
+        navigateTo(screen)
+    }
+
+    fun registerNewProvider(profile: ProviderProfile) {
+        val currentList = _providers.value.toMutableList()
+        currentList.add(0, profile)
+        _providers.value = currentList
+        _myProviderProfile.value = profile
+        setAppMode(AppMode.PROVIDER)
+    }
+
     fun navigateTo(screen: Screen) {
         if (_currentScreen.value != screen) {
             _screenHistory.add(_currentScreen.value)

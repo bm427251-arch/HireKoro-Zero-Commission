@@ -119,50 +119,110 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
   }
 
   void _promptSecretAdminLogin() {
-    final emailController = TextEditingController(text: 'bm427251@gmail.com');
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    bool obscurePassword = true;
+
     showDialog(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: const Text('Secret Admin Entry', style: TextStyle(fontWeight: FontWeight.bold)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text(
-              'Only authorized administrator email bm427251@gmail.com is permitted.',
-              style: TextStyle(fontSize: 13, color: Colors.black54),
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(
-                labelText: 'Admin Email',
-                border: OutlineInputBorder(),
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(6),
+                decoration: const BoxDecoration(
+                  color: Color(0xFF2B2B2B),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(Icons.security, color: Color(0xFFFFD700), size: 24),
               ),
+              const SizedBox(width: 10),
+              const Text('Admin Login', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
+            ],
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: emailController,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
+                    labelText: 'Admin Email ID',
+                    labelStyle: TextStyle(color: Colors.black),
+                    hintText: 'Enter admin email',
+                    prefixIcon: Icon(Icons.email, color: Colors.black),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: passwordController,
+                  obscureText: obscurePassword,
+                  style: const TextStyle(color: Colors.black),
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.black),
+                    hintText: 'Enter admin password',
+                    prefixIcon: const Icon(Icons.lock, color: Colors.black),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        obscurePassword ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.black,
+                      ),
+                      onPressed: () {
+                        setDialogState(() {
+                          obscurePassword = !obscurePassword;
+                        });
+                      },
+                    ),
+                    border: const OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFFFD700),
+                foregroundColor: Colors.black,
+              ),
+              onPressed: () {
+                final email = emailController.text.trim();
+                final pass = passwordController.text.trim();
+                if (email.isEmpty || pass.isEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Please enter both Admin Email ID and Password')),
+                  );
+                  return;
+                }
+                final isAdminEmail = email.toLowerCase() == 'admin@hirekoro.com' ||
+                    email.toLowerCase() == 'bm427251@gmail.com';
+                final isCorrectPass = pass == 'HireKoro@2024' || pass == 'admin123';
+
+                if (isAdminEmail && isCorrectPass) {
+                  Navigator.pop(ctx);
+                  setState(() => _activeScreenIndex = 3);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Invalid Admin Email or Password')),
+                  );
+                }
+              },
+              child: const Text('Admin Login', style: TextStyle(fontWeight: FontWeight.bold)),
             ),
           ],
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFFD700),
-              foregroundColor: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.pop(ctx);
-              if (emailController.text.trim().toLowerCase() == 'bm427251@gmail.com') {
-                setState(() => _activeScreenIndex = 3);
-              } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Access Denied: Unauthorized Email')),
-                );
-              }
-            },
-            child: const Text('Enter Admin Panel'),
-          ),
-        ],
       ),
     );
+  }
   }
 
   Future<bool> _onWillPop() async {
@@ -356,7 +416,16 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
           ListTile(leading: const Icon(Icons.home), title: const Text('Home'), onTap: () => _navigateScreen(0)),
           ListTile(leading: const Icon(Icons.account_balance_wallet), title: const Text('Wallet'), onTap: () => _navigateScreen(1)),
           ListTile(leading: const Icon(Icons.card_membership), title: const Text('Subscription Plans'), onTap: () => _navigateScreen(2)),
-          ListTile(leading: const Icon(Icons.admin_panel_settings), title: const Text('Admin (Secret)'), onTap: _promptSecretAdminLogin),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Center(
+              child: Text(
+                'HireKoro v1.0',
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -372,7 +441,16 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
           ListTile(leading: const Icon(Icons.home), title: const Text('Home'), onTap: () => _navigateScreen(0)),
           ListTile(leading: const Icon(Icons.account_balance_wallet), title: const Text('Wallet'), onTap: () => _navigateScreen(1)),
           ListTile(leading: const Icon(Icons.card_membership), title: const Text('Subscriptions'), onTap: () => _navigateScreen(2)),
-          ListTile(leading: const Icon(Icons.admin_panel_settings), title: const Text('Admin Console'), onTap: _promptSecretAdminLogin),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Center(
+              child: Text(
+                'HireKoro v1.0',
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ),
+          ),
         ],
       ),
     );

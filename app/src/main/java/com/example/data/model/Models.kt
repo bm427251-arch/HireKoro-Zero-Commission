@@ -35,7 +35,12 @@ enum class Screen {
     RATINGS,
     SETTINGS,
     HELP,
-    ADMIN_PANEL
+    ADMIN_PANEL,
+    BECOME_DRIVER,
+    BECOME_TECHNICIAN,
+    BECOME_RENT_OWNER,
+    BECOME_PROVIDER,
+    PROVIDER_DOCUMENTS
 }
 
 data class CustomRateBox(

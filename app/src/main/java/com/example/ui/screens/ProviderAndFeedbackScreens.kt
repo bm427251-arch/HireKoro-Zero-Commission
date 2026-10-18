@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import android.widget.Toast
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -12,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -417,3 +420,117 @@ fun RatingsScreen(
         }
     }
 }
+
+@Composable
+fun ProviderDocumentsScreen(
+    repository: HireKoroRepository,
+    language: Language
+) {
+    val myProfile by repository.myProviderProfile.collectAsState()
+    val context = LocalContext.current
+
+    val docs = remember {
+        listOf(
+            Triple("Driving License (Front & Back)", "DL-WB-2018-09876", "Verified by HireKoro Trust Safety"),
+            Triple("Government Aadhaar KYC", "Aadhaar ending with **** 8821", "Biometrically Verified"),
+            Triple("Vehicle RC Book Registration", "Commercial Transport RC", "Verified & Active"),
+            Triple("Comprehensive Commercial Insurance", "Policy #77882910-BAGIC", "Valid till 15 Aug 2027"),
+            Triple("Pollution Certificate (PUC)", "PUC Certificate #WB06-9921", "Valid till 30 Dec 2026"),
+            Triple("Work Portfolio & Trade Certification", "Technical Skill Verified", "5+ Years Experience Badge")
+        )
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(HireKoroBackground)
+            .padding(16.dp)
+            .testTag("provider_documents_screen")
+    ) {
+        Text(
+            text = "My Uploaded Verification Documents",
+            fontSize = 18.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = HireKoroCharcoal
+        )
+        Text(
+            text = "Partner: ${myProfile.name} • ${myProfile.profession} (Zero Commission Verified)",
+            fontSize = 12.sp,
+            color = Color.Gray
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.fillMaxSize()
+        ) {
+            items(docs) { (title, idNum, status) ->
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
+                    elevation = CardDefaults.cardElevation(2.dp)
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(14.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Surface(
+                            color = HireKoroYellow,
+                            shape = CircleShape,
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Icon(
+                                    imageVector = Icons.Default.VerifiedUser,
+                                    contentDescription = null,
+                                    tint = HireKoroBlack,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.width(12.dp))
+
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = title,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 13.sp,
+                                color = Color.Black
+                            )
+                            Text(
+                                text = idNum,
+                                fontSize = 11.sp,
+                                color = Color(0xFF555555)
+                            )
+                            Spacer(modifier = Modifier.height(2.dp))
+                            Text(
+                                text = "✓ $status",
+                                fontSize = 10.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF16A34A)
+                            )
+                        }
+
+                        IconButton(
+                            onClick = {
+                                Toast.makeText(context, "$title is active and encrypted.", Toast.LENGTH_SHORT).show()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Visibility,
+                                contentDescription = "View",
+                                tint = Color.Black
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
