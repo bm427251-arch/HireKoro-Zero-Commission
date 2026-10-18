@@ -9,18 +9,17 @@ import 'screens/wallet_screen.dart';
 import 'screens/subscription_screen.dart';
 import 'admin/admin_dashboard.dart';
 
+// ADMIN CREDENTIALS - EDIT HERE TO CHANGE LOGIN
+const String kAdminEmail = 'bm427251@gmail.com';
+const String kAdminPassword = 'HireKoro@2025Bm';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     EasyLocalization(
       supportedLocales: const [
-        Locale('en'),
-        Locale('hi'),
-        Locale('bn'),
-        Locale('ta'),
-        Locale('te'),
-        Locale('mr'),
-        Locale('gu'),
+        Locale('en'), Locale('hi'), Locale('bn'),
+        Locale('ta'), Locale('te'), Locale('mr'), Locale('gu'),
       ],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
@@ -31,7 +30,6 @@ void main() async {
 
 class HireKoroApp extends StatelessWidget {
   const HireKoroApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -45,19 +43,14 @@ class HireKoroApp extends StatelessWidget {
         primaryColor: const Color(0xFFFFD700),
         colorScheme: const ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFFFFD700),
-          onPrimary: Color(0xFF000000),
-          secondary: Color(0xFF2B2B2B),
-          onSecondary: Color(0xFFFFFFFF),
-          error: Color(0xFFEF4444),
-          onError: Color(0xFFFFFFFF),
-          surface: Color(0xFFFFFFFF),
-          onSurface: Color(0xFF2B2B2B),
+          primary: Color(0xFFFFD700), onPrimary: Color(0xFF000000),
+          secondary: Color(0xFF2B2B2B), onSecondary: Color(0xFFFFFFFF),
+          error: Color(0xFFEF4444), onError: Color(0xFFFFFFFF),
+          surface: Color(0xFFFFFFFF), onSurface: Color(0xFF2B2B2B),
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF2B2B2B),
-          foregroundColor: Color(0xFFFFD700),
-          elevation: 2,
+          foregroundColor: Color(0xFFFFD700), elevation: 2,
         ),
       ),
       home: const MainNavigationShell(),
@@ -67,17 +60,14 @@ class HireKoroApp extends StatelessWidget {
 
 class MainNavigationShell extends StatefulWidget {
   const MainNavigationShell({super.key});
-
   @override
   State<MainNavigationShell> createState() => _MainNavigationShellState();
 }
 
 class _MainNavigationShellState extends State<MainNavigationShell> with TickerProviderStateMixin {
-  int _currentTabIndex = 0; // 0: Hire Driver, 1: Rent a Car, 2: Hire Technician
+  int _currentTabIndex = 0;
   bool _isProviderMode = false;
-  int _activeScreenIndex = 0; // 0: Home, 1: Wallet, 2: Subscription, 3: Admin
-
-  // 7-Second Secret Admin Long Press Controller
+  int _activeScreenIndex = 0;
   late AnimationController _adminPressController;
   Timer? _adminPressTimer;
   bool _isHoldingAdmin = false;
@@ -85,10 +75,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
   @override
   void initState() {
     super.initState();
-    _adminPressController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 7),
-    );
+    _adminPressController = AnimationController(vsync: this, duration: const Duration(seconds: 7));
   }
 
   @override
@@ -132,10 +119,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
             children: [
               Container(
                 padding: const EdgeInsets.all(6),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF2B2B2B),
-                  shape: BoxShape.circle,
-                ),
+                decoration: const BoxDecoration(color: Color(0xFF2B2B2B), shape: BoxShape.circle),
                 child: const Icon(Icons.security, color: Color(0xFFFFD700), size: 24),
               ),
               const SizedBox(width: 10),
@@ -164,19 +148,12 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
                   style: const TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.black),
+                    labelStyle: const TextStyle(color: Colors.black),
                     hintText: 'Enter admin password',
                     prefixIcon: const Icon(Icons.lock, color: Colors.black),
                     suffixIcon: IconButton(
-                      icon: Icon(
-                        obscurePassword ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        setDialogState(() {
-                          obscurePassword = !obscurePassword;
-                        });
-                      },
+                      icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility, color: Colors.black),
+                      onPressed: () => setDialogState(() => obscurePassword = !obscurePassword),
                     ),
                     border: const OutlineInputBorder(),
                   ),
@@ -185,35 +162,24 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
             ),
           ),
           actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancel', style: TextStyle(color: Colors.grey)),
-            ),
+            TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel', style: TextStyle(color: Colors.grey))),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFFFD700),
-                foregroundColor: Colors.black,
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFFFFD700), foregroundColor: Colors.black),
               onPressed: () {
-                final email = emailController.text.trim();
+                final email = emailController.text.trim().toLowerCase();
                 final pass = passwordController.text.trim();
                 if (email.isEmpty || pass.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please enter both Admin Email ID and Password')),
-                  );
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter both Admin Email ID and Password')));
                   return;
                 }
-                final isAdminEmail = email.toLowerCase() == 'admin@hirekoro.com' ||
-                    email.toLowerCase() == 'bm427251@gmail.com';
-                final isCorrectPass = pass == 'HireKoro@2024' || pass == 'admin123';
+                final isAdminEmail = email == kAdminEmail.toLowerCase() || email == 'admin@hirekoro.com' || email == 'bm427251@gmail.com';
+                final isCorrectPass = pass == kAdminPassword || pass == 'HireKoro@2024' || pass == 'admin123';
 
                 if (isAdminEmail && isCorrectPass) {
                   Navigator.pop(ctx);
                   setState(() => _activeScreenIndex = 3);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Invalid Admin Email or Password')),
-                  );
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Invalid Admin Email or Password')));
                 }
               },
               child: const Text('Admin Login', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -222,7 +188,6 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
         ),
       ),
     );
-  }
   }
 
   Future<bool> _onWillPop() async {
@@ -237,11 +202,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
         content: const Text('Are you sure you want to exit HireKoro?'),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('No')),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF2B2B2B), foregroundColor: Colors.white),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Yes'),
-          ),
+          ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF2B2B2B), foregroundColor: Colors.white), onPressed: () => Navigator.pop(ctx, true), child: const Text('Yes')),
         ],
       ),
     );
@@ -255,28 +216,13 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
       child: LayoutBuilder(
         builder: (context, constraints) {
           final isWide = kIsWeb || constraints.maxWidth > 800;
-
           return Scaffold(
             drawer: _buildHamburgerDrawer(),
-            appBar: AppBar(
-              titleSpacing: 0,
-              title: _buildHeaderLogoWithLongPress(),
-              actions: [
-                _buildLanguageDropdown(),
-                const SizedBox(width: 8),
-              ],
-            ),
+            appBar: AppBar(titleSpacing: 0, title: _buildHeaderLogoWithLongPress(), actions: [_buildLanguageDropdown(), const SizedBox(width: 8)]),
             body: Row(
               children: [
                 if (isWide) _buildWebSidebar(),
-                Expanded(
-                  child: Column(
-                    children: [
-                      if (_activeScreenIndex == 0) _buildTopThreeFixedTabs(),
-                      Expanded(child: _buildCurrentScreenContent()),
-                    ],
-                  ),
-                ),
+                Expanded(child: Column(children: [if (_activeScreenIndex == 0) _buildTopThreeFixedTabs(), Expanded(child: _buildCurrentScreenContent())])),
               ],
             ),
           );
@@ -298,22 +244,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
             children: [
               AnimatedBuilder(
                 animation: _adminPressController,
-                builder: (context, child) {
-                  return SizedBox(
-                    width: 44,
-                    height: 44,
-                    child: CircularProgressIndicator(
-                      value: _adminPressController.value,
-                      strokeWidth: 3,
-                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFFFD700)),
-                      backgroundColor: Colors.white12,
-                    ),
-                  );
-                },
+                builder: (context, child) => SizedBox(width: 44, height: 44, child: CircularProgressIndicator(value: _adminPressController.value, strokeWidth: 3, valueColor: const AlwaysStoppedAnimation(Color(0xFFFFD700)), backgroundColor: Colors.white12)),
               ),
-              Image.asset('assets/logo.png', width: 34, height: 34, errorBuilder: (_, __, ___) {
-                return const Icon(Icons.drive_eta, color: Color(0xFFFFD700), size: 30);
-              }),
+              Image.asset('assets/logo.png', width: 34, height: 34, errorBuilder: (_, __, ___) => const Icon(Icons.drive_eta, color: Color(0xFFFFD700), size: 30)),
             ],
           ),
           const SizedBox(width: 8),
@@ -339,9 +272,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
           DropdownMenuItem(value: 'mr', child: Text('MR', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
           DropdownMenuItem(value: 'gu', child: Text('GU', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold))),
         ],
-        onChanged: (val) {
-          if (val != null) context.setLocale(Locale(val));
-        },
+        onChanged: (val) { if (val != null) context.setLocale(Locale(val)); },
       ),
     );
   }
@@ -350,15 +281,7 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
     return Container(
       color: const Color(0xFF2B2B2B),
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      child: Row(
-        children: [
-          _buildTabButton(0, 'Hire Driver', Icons.person_pin_circle),
-          const SizedBox(width: 6),
-          _buildTabButton(1, 'Rent a Car', Icons.directions_car),
-          const SizedBox(width: 6),
-          _buildTabButton(2, 'Hire Technician', Icons.handyman),
-        ],
-      ),
+      child: Row(children: [_buildTabButton(0, 'Hire Driver', Icons.person_pin_circle), const SizedBox(width: 6), _buildTabButton(1, 'Rent a Car', Icons.directions_car), const SizedBox(width: 6), _buildTabButton(2, 'Hire Technician', Icons.handyman)]),
     );
   }
 
@@ -366,22 +289,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
     final isSelected = _currentTabIndex == index;
     return Expanded(
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: isSelected ? const Color(0xFFFFD700) : Colors.white12,
-          foregroundColor: isSelected ? Colors.black : Colors.white,
-          elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        ),
+        style: ElevatedButton.styleFrom(backgroundColor: isSelected ? const Color(0xFFFFD700) : Colors.white12, foregroundColor: isSelected ? Colors.black : Colors.white, elevation: 0, padding: const EdgeInsets.symmetric(vertical: 10), shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
         onPressed: () => setState(() => _currentTabIndex = index),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 16),
-            const SizedBox(width: 4),
-            Text(title, style: TextStyle(fontSize: 11, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal)),
-          ],
-        ),
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [Icon(icon, size: 16), const SizedBox(width: 4), Text(title, style: TextStyle(fontSize: 11, fontWeight: isSelected ? FontWeight.bold : FontWeight.normal))]),
       ),
     );
   }
@@ -392,40 +302,14 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const Color(0xFF2B2B2B),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildHeaderLogoWithLongPress(),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    const Text('Mode: ', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                    ChoiceChip(
-                      label: Text(_isProviderMode ? 'Provider' : 'User'),
-                      selected: _isProviderMode,
-                      selectedColor: const Color(0xFFFFD700),
-                      onSelected: (val) => setState(() => _isProviderMode = val),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+            decoration: const BoxDecoration(color: Color(0xFF2B2B2B)),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.center, children: [_buildHeaderLogoWithLongPress(), const SizedBox(height: 12), Row(children: [const Text('Mode: ', style: TextStyle(color: Colors.white70, fontSize: 13)), ChoiceChip(label: Text(_isProviderMode ? 'Provider' : 'User'), selected: _isProviderMode, selectedColor: const Color(0xFFFFD700), onSelected: (val) => setState(() => _isProviderMode = val))])]),
           ),
           ListTile(leading: const Icon(Icons.home), title: const Text('Home'), onTap: () => _navigateScreen(0)),
           ListTile(leading: const Icon(Icons.account_balance_wallet), title: const Text('Wallet'), onTap: () => _navigateScreen(1)),
           ListTile(leading: const Icon(Icons.card_membership), title: const Text('Subscription Plans'), onTap: () => _navigateScreen(2)),
           const Divider(),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(
-              child: Text(
-                'HireKoro v1.0',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-            ),
-          ),
+          const Padding(padding: EdgeInsets.all(16.0), child: Center(child: Text('HireKoro v1.0', style: TextStyle(color: Colors.grey, fontSize: 12)))),
         ],
       ),
     );
@@ -435,44 +319,22 @@ class _MainNavigationShellState extends State<MainNavigationShell> with TickerPr
     return Container(
       width: 240,
       color: Colors.white,
-      child: ListView(
-        children: [
-          const SizedBox(height: 16),
-          ListTile(leading: const Icon(Icons.home), title: const Text('Home'), onTap: () => _navigateScreen(0)),
-          ListTile(leading: const Icon(Icons.account_balance_wallet), title: const Text('Wallet'), onTap: () => _navigateScreen(1)),
-          ListTile(leading: const Icon(Icons.card_membership), title: const Text('Subscriptions'), onTap: () => _navigateScreen(2)),
-          const Divider(),
-          const Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Center(
-              child: Text(
-                'HireKoro v1.0',
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-            ),
-          ),
-        ],
-      ),
+      child: ListView(children: [const SizedBox(height: 16), ListTile(leading: const Icon(Icons.home), title: const Text('Home'), onTap: () => _navigateScreen(0)), ListTile(leading: const Icon(Icons.account_balance_wallet), title: const Text('Wallet'), onTap: () => _navigateScreen(1)), ListTile(leading: const Icon(Icons.card_membership), title: const Text('Subscriptions'), onTap: () => _navigateScreen(2)), const Divider(), const Padding(padding: EdgeInsets.all(16.0), child: Center(child: Text('HireKoro v1.0', style: TextStyle(color: Colors.grey, fontSize: 12))))]),
     );
   }
 
   void _navigateScreen(int index) {
-    Navigator.pop(context); // close drawer if open
+    Navigator.pop(context);
     setState(() => _activeScreenIndex = index);
   }
 
   Widget _buildCurrentScreenContent() {
     switch (_activeScreenIndex) {
-      case 0:
-        return HomeScreen(tabIndex: _currentTabIndex);
-      case 1:
-        return const WalletScreen();
-      case 2:
-        return const SubscriptionScreen();
-      case 3:
-        return const AdminDashboardScreen();
-      default:
-        return HomeScreen(tabIndex: _currentTabIndex);
+      case 0: return HomeScreen(tabIndex: _currentTabIndex);
+      case 1: return const WalletScreen();
+      case 2: return const SubscriptionScreen();
+      case 3: return const AdminDashboardScreen();
+      default: return HomeScreen(tabIndex: _currentTabIndex);
     }
   }
 }
